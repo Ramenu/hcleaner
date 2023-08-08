@@ -17,8 +17,8 @@ lazy_static! {
 pub const ARCH_BASE_FLAG : u32 = 1;
 pub const DEBIAN_BASE_FLAG : u32 = 2;
 
-pub const ARCH_STR : &'static str = "Arch Linux";
-pub const DEBIAN_STR : &'static str = "Debian GNU/Linux";
+pub const ARCH_STR : &str = "Arch Linux";
+pub const DEBIAN_STR : &str = "Debian GNU/Linux";
 
 fn check_linux_distribution() -> DistroInfo
 {
