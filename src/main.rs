@@ -86,6 +86,7 @@ fn main()
         (format!("{xdg_data}/baloo"), BALOO_PKG),
         (format!("{xdg_config}/Signal"), SIGNAL_PKG),
     ]);
+    println!("{BOLD}[1/2]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()
                                                     .filter_map(|e| e.ok())
                                                     .count();
@@ -99,7 +100,8 @@ fn main()
                                 .template(&bar_template)
                                 .unwrap()
                                 .progress_chars("##-"));
-    bar.println("Scanning files...");
+    let bar_msg = format!("{BOLD}[2/2]{RESET} Scanning files...", BOLD=BOLD, RESET=RESET);
+    bar.println(bar_msg);
 
     for entry in it {
         let path = entry.path();
