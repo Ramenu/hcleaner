@@ -17,3 +17,4 @@ codegen-units = 1
 lazy_static = "1.4.0"
 walkdir = "2.3.3"
 bitflags = "2.3.3"
+indicatif = "0.17.6"

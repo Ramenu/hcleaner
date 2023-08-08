@@ -1,5 +1,7 @@
 use std::{collections::HashMap, io::Write};
 
+use indicatif::{ProgressBar, ProgressStyle};
+use os::DISTRIBUTION;
 use package::*;
 use walkdir::WalkDir;
 use bitflags::bitflags;
@@ -23,7 +25,8 @@ bitflags! {
 fn main() 
 {
     let flags = parse_args();
-    let home = std::env::var("HOME").unwrap();
+    let binding = std::env::var("HOME").unwrap();
+    let home = binding.as_str();
     let xdg_config = std::env::var("XDG_CONFIG_HOME").unwrap_or(format!("{}/.config", home));
     let xdg_cache = std::env::var("XDG_CACHE_HOME").unwrap_or(format!("{}/.cache", home));
     let xdg_data = std::env::var("XDG_DATA_HOME").unwrap_or(format!("{}/.local/share", home));
@@ -83,8 +86,22 @@ fn main()
         (format!("{xdg_data}/baloo"), BALOO_PKG),
         (format!("{xdg_config}/Signal"), SIGNAL_PKG),
     ]);
+    let total_files = WalkDir::new(home).into_iter()
+                                                    .filter_map(|e| e.ok())
+                                                    .count();
 
-    for entry in WalkDir::new(home).into_iter().filter_map(|e| e.ok()) {
+    let it = WalkDir::new(home).into_iter()
+                                                                    .filter_map(|e| e.ok());
+    let bar = ProgressBar::new(total_files as u64);
+    let (primary_accent_color, secondary_accent_color) = get_accent_colors();
+    let bar_template = format!("[{{elapsed_precise}}] [{{bar:40.{primary_accent_color}/{secondary_accent_color}}}] {{pos:>7}}/{{len:7}} {{msg}}"); 
+    bar.set_style(ProgressStyle::default_bar()
+                                .template(&bar_template)
+                                .unwrap()
+                                .progress_chars("##-"));
+    bar.println("Scanning files...");
+
+    for entry in it {
         let path = entry.path();
         let is_dir = path.is_dir();
 
@@ -101,6 +118,7 @@ fn main()
             }
         }
 
+        bar.inc(1);
         let path_str = path.to_str().unwrap();
         let pkg = map.get(path_str);
 
@@ -109,7 +127,6 @@ fn main()
 
             if exists.is_some() && !exists.unwrap() {
                 if flags&ArgFlags::NOCONFIRM == ArgFlags::NONE {
-
                     print!("remove '{}'? [y/N] ", path_str);
                     std::io::stdout().flush().unwrap();
                     let mut input = String::new();
@@ -130,6 +147,7 @@ fn main()
             }
         }
     }
+    bar.finish();
 }
 
 /// Parses the command line arguments passed to the program and
@@ -185,6 +203,15 @@ fn parse_args() -> ArgFlags
     }
 
     flags
+}
+
+fn get_accent_colors() -> (&'static str, &'static str)
+{
+    match DISTRIBUTION.name {
+        "Arch Linux" => ("cyan", "blue"),
+        "Debian GNU/Linux" => ("red", "blue"),
+        _ => ("white", "white"),
+    }
 }
 
 #[inline]

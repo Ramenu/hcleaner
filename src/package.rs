@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use crate::os::{DISTRIBUTION, ARCH};
+use crate::os::{DISTRIBUTION, ARCH_BASE_FLAG};
 
 pub const DILLO_PKG : Package = Package{arch: "dillo", debian: "dillo"};
 pub const SUPERTUXKART_PKG : Package = Package{arch: "supertuxkart", debian: "supertuxkart"};
@@ -47,8 +47,8 @@ pub struct Package
 /// is false, then the package is not installed.
 pub fn pkg_exists(pkg : &Package) -> Option<bool>
 {
-    match *DISTRIBUTION {
-        ARCH => pkg_exists_arch(pkg.arch),
+    match DISTRIBUTION.base_flag {
+        ARCH_BASE_FLAG => pkg_exists_arch(pkg.arch),
         _ => unreachable!()
     }
 }
