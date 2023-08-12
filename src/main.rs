@@ -85,6 +85,8 @@ fn main()
         (format!("{xdg_config}/chromium"), CHROMIUM_PKG),
         (format!("{xdg_data}/baloo"), BALOO_PKG),
         (format!("{xdg_config}/Signal"), SIGNAL_PKG),
+        (format!("{xdg_config}/google-chrome"), GOOGLE_CHROME_PKG),
+        (format!("{xdg_cache}/google-chrome"), GOOGLE_CHROME_PKG),
     ]);
     println!("{BOLD}[1/2]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()

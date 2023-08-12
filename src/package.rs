@@ -35,6 +35,7 @@ pub const PARU_PKG : Package = Package{arch: "paru", debian: ""};
 pub const CHROMIUM_PKG : Package = Package{arch: "chromium|ungoogled-chromium|ungoogled-chromium-bin", debian: "chromium"};
 pub const BALOO_PKG : Package = Package{arch: "baloo", debian: "baloo-kf5"};
 pub const SIGNAL_PKG : Package = Package{arch: "signal-desktop", debian: ""};
+pub const GOOGLE_CHROME_PKG : Package = Package{arch: "google-chrome", debian: ""};
 
 pub struct Package
 {
