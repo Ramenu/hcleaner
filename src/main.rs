@@ -87,6 +87,8 @@ fn main()
         (format!("{xdg_config}/Signal"), SIGNAL_PKG),
         (format!("{xdg_config}/google-chrome"), GOOGLE_CHROME_PKG),
         (format!("{xdg_cache}/google-chrome"), GOOGLE_CHROME_PKG),
+        (format!("{home}/.librewolf"), LIBREWOLF_PKG),
+        (format!("{xdg_cache}/librewolf"), LIBREWOLF_PKG),
     ]);
     println!("{BOLD}[1/2]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()
