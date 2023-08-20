@@ -91,6 +91,8 @@ fn main()
         (format!("{xdg_cache}/librewolf"), LIBREWOLF_PKG),
         (format!("{home}/.idapro"), IDA_PRO_PKG),
         (format!("{xdg_config}/balena-etcher"), BALENA_ETCHER_PKG),
+        (format!("{home}/.waterfox"), WATERFOX_PKG),
+        (format!("{xdg_cache}/waterfox"), WATERFOX_PKG),
     ]);
     println!("{BOLD}[1/2]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()

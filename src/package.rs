@@ -39,6 +39,7 @@ pub const GOOGLE_CHROME_PKG : Package = Package{arch: "google-chrome", debian: "
 pub const LIBREWOLF_PKG : Package = Package{arch: "librewolf|librewolf-bin", debian: ""};
 pub const IDA_PRO_PKG : Package = Package{arch: "ida-free|ida-pro", debian: ""};
 pub const BALENA_ETCHER_PKG : Package = Package{arch: "balena-etcher|etcher-bin", debian: ""};
+pub const WATERFOX_PKG : Package = Package{arch: "waterfox-current-bin|waterfox|waterfox-classic-bin", debian: ""};
 
 pub struct Package
 {
