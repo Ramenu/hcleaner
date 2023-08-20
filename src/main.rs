@@ -93,6 +93,8 @@ fn main()
         (format!("{xdg_config}/balena-etcher"), BALENA_ETCHER_PKG),
         (format!("{home}/.waterfox"), WATERFOX_PKG),
         (format!("{xdg_cache}/waterfox"), WATERFOX_PKG),
+        (format!("{home}/.basilisk-dev/basilisk"), BASILISK_PKG),
+        (format!("{xdg_cache}/basilisk-dev/basilisk"), BASILISK_PKG),
     ]);
     println!("{BOLD}[1/2]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()
