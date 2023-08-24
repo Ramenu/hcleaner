@@ -43,6 +43,7 @@ fn main()
         (format!("{xdg_data}/midori"), MIDORI_PKG),
         (format!("{xdg_config}/neofetch"), NEOFETCH_PKG),
         (format!("{xdg_config}/BraveSoftware/Brave-Browser"), BRAVE_BROWSER_PKG),
+        (format!("{xdg_cache}/BraveSoftware/Brave-Browser"), BRAVE_BROWSER_PKG),
         (format!("{xdg_config}/libreoffice"), LIBREOFFICE_PKG),
         (format!("{xdg_config}/VirtualBox"), VIRTUALBOX_PKG),
         (format!("{home}/VirtualBox VMs"), VIRTUALBOX_PKG),
@@ -95,6 +96,8 @@ fn main()
         (format!("{xdg_cache}/waterfox"), WATERFOX_PKG),
         (format!("{home}/.basilisk-dev/basilisk"), BASILISK_PKG),
         (format!("{xdg_cache}/basilisk-dev/basilisk"), BASILISK_PKG),
+        (format!("{xdg_cache}/BraveSoftware/Brave-Browser-Nightly"), BRAVE_BROWSER_NIGHTLY_PKG),
+        (format!("{xdg_config}/BraveSoftware/Brave-Browser-Nightly"), BRAVE_BROWSER_NIGHTLY_PKG),
     ]);
     println!("{BOLD}[1/2]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()

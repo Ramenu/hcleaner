@@ -41,6 +41,7 @@ pub const IDA_PRO_PKG : Package = Package{arch: "ida-free|ida-pro", debian: ""};
 pub const BALENA_ETCHER_PKG : Package = Package{arch: "balena-etcher|etcher-bin", debian: ""};
 pub const WATERFOX_PKG : Package = Package{arch: "waterfox-current-bin|waterfox|waterfox-classic-bin", debian: ""};
 pub const BASILISK_PKG : Package = Package{arch: "basilisk-bin|basilisk", debian: ""};
+pub const BRAVE_BROWSER_NIGHTLY_PKG : Package = Package{arch: "brave-nightly-bin", debian: ""};
 
 pub struct Package
 {
