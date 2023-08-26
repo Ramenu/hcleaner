@@ -19,7 +19,15 @@ bitflags! {
         const NONE = 0;
         const NOCONFIRM = 1 << 0;
         const SHOW_VERSION = 1 << 1;
+        const CLEAN_CACHE = 1 << 2;
+        const ALWAYS_PROMPT = 1 << 3;
     }
+}
+
+macro_rules! warn {
+    ($($arg:tt)*) => {{
+        format!("{BOLD}{YELLOW}warning{RESET}{BOLD}:{RESET} {}", format!($($arg)*))
+    }};
 }
 
 fn main() 
@@ -30,6 +38,15 @@ fn main()
     let xdg_config = std::env::var("XDG_CONFIG_HOME").unwrap_or(format!("{}/.config", home));
     let xdg_cache = std::env::var("XDG_CACHE_HOME").unwrap_or(format!("{}/.cache", home));
     let xdg_data = std::env::var("XDG_DATA_HOME").unwrap_or(format!("{}/.local/share", home));
+
+    let mut step = 1;
+    let total_steps = || -> u64 {
+        let mut total_steps = 2;
+        if flags&ArgFlags::CLEAN_CACHE == ArgFlags::CLEAN_CACHE {
+            total_steps += 1;
+        }
+        total_steps
+    }();
 
     let map : HashMap<String, Package> = HashMap::from([
         (format!("{home}/.dillo"), DILLO_PKG),
@@ -99,7 +116,7 @@ fn main()
         (format!("{xdg_cache}/BraveSoftware/Brave-Browser-Nightly"), BRAVE_BROWSER_NIGHTLY_PKG),
         (format!("{xdg_config}/BraveSoftware/Brave-Browser-Nightly"), BRAVE_BROWSER_NIGHTLY_PKG),
     ]);
-    println!("{BOLD}[1/2]{RESET} Checking total number of files in home directory...");
+    println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()
                                                     .filter_map(|e| e.ok())
                                                     .count();
@@ -113,8 +130,12 @@ fn main()
                                 .template(&bar_template)
                                 .unwrap()
                                 .progress_chars("##-"));
-    let bar_msg = format!("{BOLD}[2/2]{RESET} Scanning files...", BOLD=BOLD, RESET=RESET);
+    step += 1;
+    let bar_msg = format!("{BOLD}[{step}/{total_steps}]{RESET} Scanning files...", BOLD=BOLD, RESET=RESET);
     bar.println(bar_msg);
+
+    let always_prompt = flags&ArgFlags::ALWAYS_PROMPT == ArgFlags::ALWAYS_PROMPT;
+    let noconfirm = flags&ArgFlags::NOCONFIRM == ArgFlags::NOCONFIRM && !always_prompt;
 
     for entry in it {
         let path = entry.path();
@@ -127,7 +148,9 @@ fn main()
             if let Ok(mut read_dir) = read_dir {
                 let is_empty = read_dir.next().is_none();
                 if is_empty {
-                    std::fs::remove_dir(path).unwrap();
+                    confirm_before_exec(|| std::fs::remove_dir(path).unwrap(),
+                                        always_prompt,
+                                        &warn!("remove empty directory '{}'?", path.to_str().unwrap()));
                     continue;
                 }
             }
@@ -138,31 +161,86 @@ fn main()
         let pkg = map.get(path_str);
 
         if let Some(pkg) = pkg {
-            let exists = pkg_exists(pkg);
-
-            if exists.is_some() && !exists.unwrap() {
-                if flags&ArgFlags::NOCONFIRM == ArgFlags::NONE {
-                    print!("remove '{}'? [y/N] ", path_str);
-                    std::io::stdout().flush().unwrap();
-                    let mut input = String::new();
-                    std::io::stdin().read_line(&mut input).unwrap();
-
-                    if input.trim() != "y" {
-                        continue;
-                    }
-                }
-
+            if let Some(false) = pkg_exists(pkg) {
                 if is_dir {
-                    println!("removing all contents from '{}'", path_str);
-                    std::fs::remove_dir_all(path).unwrap();
+                    confirm_before_exec(|| std::fs::remove_dir_all(path).unwrap(),
+                                        !noconfirm,
+                                        &warn!("remove all contents from '{}'?", path_str));
                 } else {
-                    println!("removing '{}'", path_str);
-                    std::fs::remove_file(path).unwrap();
+                    confirm_before_exec(|| std::fs::remove_file(path).unwrap(),
+                                        !noconfirm,
+                                        &warn!("remove '{}'?", path_str));
                 }
             }
         }
     }
-    bar.finish();
+    bar.finish_and_clear();
+
+    if flags&ArgFlags::CLEAN_CACHE == ArgFlags::CLEAN_CACHE {
+        step += 1;
+        println!("{BOLD}[{step}/{total_steps}]{RESET} Cleaning cache...", BOLD=BOLD, RESET=RESET, step=step, total_steps=total_steps);
+        clean_cache(&xdg_cache, always_prompt);
+    }
+}
+
+fn clean_cache(cache_dir : &String, always_prompt : bool)
+{
+    let it = WalkDir::new(cache_dir).max_depth(1)
+                                                                         .into_iter()
+                                                                         .filter_map(|e| e.ok());
+    let yay_cache = format!("{}/yay", cache_dir);
+
+    for entry in it {
+        let entry_path = entry.path().to_str().unwrap();
+        if entry_path == cache_dir {
+            continue;
+        }
+
+        // yay's cache stores 'vcs.json' which can be problematic when removed, so we have to only
+        // delete the directories
+        if entry_path == &yay_cache {
+            let it = WalkDir::new(entry.path()).max_depth(1)
+                                                                                    .into_iter()
+                                                                                    .filter_map(|e| e.ok());
+            for subentry in it {
+                if entry.path().to_str().unwrap() == &format!("{}/yay", cache_dir) {
+                    continue;
+                }
+                if subentry.path().is_dir() {
+                    confirm_before_exec(|| std::fs::remove_dir_all(subentry.path()).unwrap(),
+                                        always_prompt,
+                                        &warn!("remove '{}'?", subentry.path().to_str().unwrap()));
+                }
+            }
+            continue;
+        }
+
+        if entry.path().is_dir() {
+            confirm_before_exec(|| std::fs::remove_dir_all(entry.path()).unwrap(), 
+                                always_prompt, 
+                            &warn!("remove all contents from '{}'?", entry.path().to_str().unwrap()));
+        } else {
+            confirm_before_exec(|| std::fs::remove_file(entry.path()).unwrap(), 
+                                always_prompt, 
+                                &warn!("remove '{}'?", entry.path().to_str().unwrap()));
+        }
+    }
+}
+
+fn confirm_before_exec<T>(callback : T, confirm : bool, msg : &str)
+    where T : Fn()
+{
+    if confirm {
+        print!("{msg} [y/N] ");
+        std::io::stdout().flush().unwrap();
+        let mut input = String::new();
+        std::io::stdin().read_line(&mut input).unwrap();
+
+        if input.trim() != "y" {
+            return;
+        }
+    }
+    callback();
 }
 
 /// Parses the command line arguments passed to the program and
@@ -193,6 +271,8 @@ fn parse_args() -> ArgFlags
                         match arg.as_str() {
                             "--version" => flags |= ArgFlags::SHOW_VERSION,
                             "--noconfirm" => flags |= ArgFlags::NOCONFIRM,
+                            "--clean-cache" => flags |= ArgFlags::CLEAN_CACHE,
+                            "--always-prompt" => flags |= ArgFlags::ALWAYS_PROMPT,
                             "--help" => {
                                 println!("{}", HELP_MESSAGE);
                                 std::process::exit(0);

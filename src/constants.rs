@@ -3,11 +3,15 @@ pub const RUSTC_VERSION : &str = env!("rustc_version");
 pub const HELP_MESSAGE : &str = "
 Usage: hcleaner [OPTION]...\n\
 A program for removing configuration files and directories of uninstalled packages\n\
+in the user's home directory.\n\
 \n\
 Options:\n\
     -v, --version    show version information and exit\n\
-    --noconfirm      do not prompt for confirmation before deleting directories and\n\
-                     files\n\
+    --noconfirm      do not prompt for confirmation before deleting directories and
+                 files\n\
+    --clean-cache    clean the ${XDG_CACHE_DIR} directory\n\
+    --always-prompt  always prompt for confirmation before deleting directories and
+                 files (this overrides --noconfirm)\n\
     --help           show this help message and exit\n\
 \n\
 Report bugs and security issues on https://www.github.com/Ramenu/hcleaner";
