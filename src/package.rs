@@ -42,6 +42,7 @@ pub const BALENA_ETCHER_PKG : Package = Package{arch: "balena-etcher|etcher-bin"
 pub const WATERFOX_PKG : Package = Package{arch: "waterfox-current-bin|waterfox|waterfox-classic-bin", debian: ""};
 pub const BASILISK_PKG : Package = Package{arch: "basilisk-bin|basilisk", debian: ""};
 pub const BRAVE_BROWSER_NIGHTLY_PKG : Package = Package{arch: "brave-nightly-bin", debian: ""};
+pub const SESSION_PKG : Package = Package{arch: "session-desktop-bin|session-desktop-git", debian: ""};
 
 pub struct Package
 {
