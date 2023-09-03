@@ -117,6 +117,8 @@ fn main()
         (format!("{xdg_config}/BraveSoftware/Brave-Browser-Nightly"), BRAVE_BROWSER_NIGHTLY_PKG),
         (format!("{xdg_config}/Session"), SESSION_PKG),
         (format!("{home}/.local/opt/tor-browser"), TOR_BROWSER_PKG),
+        (format!("{xdg_config}/microsoft-edge"), MICROSOFT_EDGE_PKG),
+        (format!("{xdg_cache}/microsoft-edge"), MICROSOFT_EDGE_PKG),
     ]);
     println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()

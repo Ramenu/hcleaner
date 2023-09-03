@@ -44,6 +44,7 @@ pub const BASILISK_PKG : Package = Package{arch: "basilisk-bin|basilisk", debian
 pub const BRAVE_BROWSER_NIGHTLY_PKG : Package = Package{arch: "brave-nightly-bin", debian: ""};
 pub const SESSION_PKG : Package = Package{arch: "session-desktop-bin|session-desktop-git", debian: ""};
 pub const TOR_BROWSER_PKG : Package = Package{arch: "tor-browser", debian: "torbrowser-launcher"};
+pub const MICROSOFT_EDGE_PKG : Package = Package{arch: "microsoft-edge-stable-bin|microsoft-edge-beta-bin|microsoft-edge-dev-bin", debian: ""};
 
 pub struct Package
 {
