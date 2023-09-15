@@ -122,6 +122,7 @@ fn main()
         (format!("{xdg_cache}/Microsoft/Edge"), MICROSOFT_EDGE_PKG),
         (format!("{home}/.netbeans"), NETBEANS_PKG),
         (format!("{xdg_cache}/netbeans"), NETBEANS_PKG),
+        (format!("{home}/.sqldeveloper"), ORACLE_SQLDEVELOPER_PKG),
     ]);
     println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()

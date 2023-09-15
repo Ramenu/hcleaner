@@ -46,6 +46,7 @@ pub const SESSION_PKG : Package = Package{arch: "session-desktop-bin|session-des
 pub const TOR_BROWSER_PKG : Package = Package{arch: "tor-browser", debian: "torbrowser-launcher"};
 pub const MICROSOFT_EDGE_PKG : Package = Package{arch: "microsoft-edge-stable-bin|microsoft-edge-beta-bin|microsoft-edge-dev-bin", debian: ""};
 pub const NETBEANS_PKG : Package = Package{arch: "netbeans", debian: "netbeans"};
+pub const ORACLE_SQLDEVELOPER_PKG : Package = Package{arch: "oracle-sqldeveloper", debian: "sqldeveloper-package"};
 
 pub struct Package
 {
