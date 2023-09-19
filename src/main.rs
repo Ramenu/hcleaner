@@ -123,6 +123,8 @@ fn main()
         (format!("{home}/.netbeans"), NETBEANS_PKG),
         (format!("{xdg_cache}/netbeans"), NETBEANS_PKG),
         (format!("{home}/.sqldeveloper"), ORACLE_SQLDEVELOPER_PKG),
+        (format!("{xdg_config}/JetBrains/IdeaIC2023.1"), INTELLIJ_IDEA_PKG),
+        (format!("{xdg_cache}/JetBrains/IdeaIC2023.1"), INTELLIJ_IDEA_PKG),
     ]);
     println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()

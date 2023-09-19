@@ -47,6 +47,7 @@ pub const TOR_BROWSER_PKG : Package = Package{arch: "tor-browser", debian: "torb
 pub const MICROSOFT_EDGE_PKG : Package = Package{arch: "microsoft-edge-stable-bin|microsoft-edge-beta-bin|microsoft-edge-dev-bin", debian: ""};
 pub const NETBEANS_PKG : Package = Package{arch: "netbeans", debian: "netbeans"};
 pub const ORACLE_SQLDEVELOPER_PKG : Package = Package{arch: "oracle-sqldeveloper", debian: "sqldeveloper-package"};
+pub const INTELLIJ_IDEA_PKG : Package = Package{arch: "intellij-idea-community-edition|intellij-idea-ultimate-edition", debian : ""};
 
 pub struct Package
 {
