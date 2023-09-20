@@ -199,31 +199,34 @@ fn clean_cache(cache_dir : &String, always_prompt : bool)
                                                                          .into_iter()
                                                                          .filter_map(|e| e.ok());
     let yay_cache = format!("{}/yay", cache_dir);
+    let urlwatch_cache = format!("{}/urlwatch", cache_dir);
 
     for entry in it {
         let entry_path = entry.path().to_str().unwrap();
-        if entry_path == cache_dir {
-            continue;
-        }
 
-        // yay's cache stores 'vcs.json' which can be problematic when removed, so we have to only
-        // delete the directories
-        if entry_path == &yay_cache {
-            let it = WalkDir::new(entry.path()).max_depth(1)
-                                                                                    .into_iter()
-                                                                                    .filter_map(|e| e.ok());
-            for subentry in it {
-                if entry.path().to_str().unwrap() == &format!("{}/yay", cache_dir) {
-                    continue;
+        match entry_path {
+            entry_path if entry_path == cache_dir => continue,
+            entry_path if entry_path == urlwatch_cache => continue,
+            // yay's cache stores 'vcs.json' which can be problematic when removed, so we have to only
+            // delete the directories
+            entry_path if entry_path == yay_cache => {
+                let it = WalkDir::new(entry.path()).max_depth(1)
+                                                                                                    .into_iter()
+                                                                                                    .filter_map(|e| e.ok());
+                for subentry in it {
+                    if entry.path().to_str().unwrap() == &format!("{}/yay", cache_dir) {
+                        continue;
+                    }
+                    if subentry.path().is_dir() {
+                        confirm_before_exec(|| std::fs::remove_dir_all(subentry.path()).unwrap(),
+                                            always_prompt,
+                                            &warn!("remove '{}'?", subentry.path().to_str().unwrap()));
+                    }
                 }
-                if subentry.path().is_dir() {
-                    confirm_before_exec(|| std::fs::remove_dir_all(subentry.path()).unwrap(),
-                                        always_prompt,
-                                        &warn!("remove '{}'?", subentry.path().to_str().unwrap()));
-                }
+                continue;
             }
-            continue;
-        }
+            _ => {}
+        };
 
         if entry.path().is_dir() {
             confirm_before_exec(|| std::fs::remove_dir_all(entry.path()).unwrap(), 
