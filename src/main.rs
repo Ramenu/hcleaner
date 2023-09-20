@@ -214,7 +214,7 @@ fn clean_cache(cache_dir : &String, always_prompt : bool)
                                                                                                     .into_iter()
                                                                                                     .filter_map(|e| e.ok());
                 for subentry in it {
-                    if entry.path().to_str().unwrap() == &format!("{}/yay", cache_dir) {
+                    if subentry.path().to_str().unwrap() == yay_cache {
                         continue;
                     }
                     if subentry.path().is_dir() {
