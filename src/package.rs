@@ -79,7 +79,7 @@ fn pkg_exists_arch(pkgname : &str) -> Option<bool>
                                      .arg("-Q")
                                      .arg(pkgname)
                                      .output()
-                                     .expect("Failed to execute pacman command");
+                                     .expect("Failed to query database");
 
         if output.status.success() {
             return Some(true)
