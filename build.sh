@@ -2,7 +2,7 @@
 
 export rustc_version=$(rustc --version)
 if [[ "$1" == '--release' ]]; then
-    cargo build --release
+    cargo clippy && cargo build --release
 else
-    cargo build 
+    cargo clippy && cargo build 
 fi
