@@ -16,12 +16,12 @@ Options:\n\
 \n\
 Report bugs and security issues on https://www.github.com/Ramenu/hcleaner";
 
-pub const RESET : &str = "\x1b[0m";
-pub const RED : &str = "\x1b[31m";
-pub const GREEN : &str = "\x1b[32m";
-pub const YELLOW : &str = "\x1b[33m";
-pub const BLUE : &str = "\x1b[34m";
-pub const MAGENTA : &str = "\x1b[35m";
-pub const CYAN : &str = "\x1b[36m";
-pub const WHITE : &str = "\x1b[37m";
-pub const BOLD : &str = "\x1b[1m";
+#[allow(unused)] pub const RESET : &str = "\x1b[0m";
+#[allow(unused)] pub const RED : &str = "\x1b[31m";
+#[allow(unused)] pub const GREEN : &str = "\x1b[32m";
+#[allow(unused)] pub const YELLOW : &str = "\x1b[33m";
+#[allow(unused)] pub const BLUE : &str = "\x1b[34m";
+#[allow(unused)] pub const MAGENTA : &str = "\x1b[35m";
+#[allow(unused)] pub const CYAN : &str = "\x1b[36m";
+#[allow(unused)] pub const WHITE : &str = "\x1b[37m";
+#[allow(unused)] pub const BOLD : &str = "\x1b[1m";
