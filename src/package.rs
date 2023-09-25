@@ -49,6 +49,7 @@ pub const NETBEANS_PKG : Package = Package{arch: "netbeans", debian: "netbeans"}
 pub const ORACLE_SQLDEVELOPER_PKG : Package = Package{arch: "oracle-sqldeveloper", debian: "sqldeveloper-package"};
 pub const INTELLIJ_IDEA_PKG : Package = Package{arch: "intellij-idea-community-edition|intellij-idea-ultimate-edition", debian : ""};
 pub const GRADLE_PKG : Package = Package{arch: "gradle", debian: "gradle"};
+pub const CISCO_PACKET_TRACER_PKG : Package = Package{arch: "packettracer", debian: ""};
 
 pub struct Package
 {

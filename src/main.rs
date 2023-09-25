@@ -126,6 +126,9 @@ fn main()
         (format!("{xdg_config}/JetBrains/IdeaIC2023.1"), INTELLIJ_IDEA_PKG),
         (format!("{xdg_cache}/JetBrains/IdeaIC2023.1"), INTELLIJ_IDEA_PKG),
         (format!("{home}/.gradle"), GRADLE_PKG),
+        (format!("{home}/packettracer"), CISCO_PACKET_TRACER_PKG),
+        (format!("{xdg_cache}/Cisco Packet Tracer"), CISCO_PACKET_TRACER_PKG),
+        (format!("{xdg_data}/Cisco Packet Tracer"), CISCO_PACKET_TRACER_PKG),
     ]);
     println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()
