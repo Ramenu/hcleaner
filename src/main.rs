@@ -225,7 +225,6 @@ fn clean_cache(cache_dir : &String, always_prompt : bool)
                     }
                     if !subentry_str.ends_with("PKGBUILD") {
                         confirm_before_exec(|| {
-                            println!("{}", subentry_str);
                             if subentry_path.is_dir() {
                                 std::fs::remove_dir_all(subentry_path).unwrap();
                             } else {
