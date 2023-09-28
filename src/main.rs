@@ -220,11 +220,18 @@ fn clean_cache(cache_dir : &String, always_prompt : bool)
                 for subentry in it {
                     let subentry_path = subentry.path();
                     let subentry_str = subentry_path.to_str().unwrap();
-                    if subentry_str == yay_cache || subentry_path.is_dir() || subentry_path.parent().unwrap().to_str().unwrap() == yay_cache {
+                    if subentry_str == yay_cache || subentry_path.parent().unwrap().to_str().unwrap() == yay_cache {
                         continue;
                     }
                     if !subentry_str.ends_with("PKGBUILD") {
-                        confirm_before_exec(|| std::fs::remove_file(subentry_path).unwrap(),
+                        confirm_before_exec(|| {
+                            println!("{}", subentry_str);
+                            if subentry_path.is_dir() {
+                                std::fs::remove_dir_all(subentry_path).unwrap();
+                            } else {
+                                std::fs::remove_file(subentry_path).unwrap();
+                            }
+                        },
                                             always_prompt,
                                             &warn!("remove '{}'?", subentry_str));
                     }
