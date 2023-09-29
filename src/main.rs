@@ -220,7 +220,9 @@ fn clean_cache(cache_dir : &String, always_prompt : bool)
                 for subentry in it {
                     let subentry_path = subentry.path();
                     let subentry_str = subentry_path.to_str().unwrap();
-                    if subentry_str == yay_cache || subentry_path.parent().unwrap().to_str().unwrap() == yay_cache {
+                    if subentry_str == yay_cache || 
+                       subentry_str.ends_with(".git") ||
+                       subentry_path.parent().unwrap().to_str().unwrap() == yay_cache {
                         continue;
                     }
                     if !subentry_str.ends_with("PKGBUILD") {
