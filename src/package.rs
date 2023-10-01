@@ -50,6 +50,7 @@ pub const ORACLE_SQLDEVELOPER_PKG : Package = Package{arch: "oracle-sqldeveloper
 pub const INTELLIJ_IDEA_PKG : Package = Package{arch: "intellij-idea-community-edition|intellij-idea-ultimate-edition", debian : ""};
 pub const GRADLE_PKG : Package = Package{arch: "gradle", debian: "gradle"};
 pub const CISCO_PACKET_TRACER_PKG : Package = Package{arch: "packettracer", debian: ""};
+pub const EPIPHANY_BROWSER_PKG : Package = Package{arch: "epiphany", debian: "epiphany-browser"};
 
 pub struct Package
 {
