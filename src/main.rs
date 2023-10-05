@@ -73,6 +73,7 @@ fn main()
         (format!("{home}/.mozilla/firefox"), FIREFOX_PKG),
         (format!("{xdg_cache}/mozilla/firefox"), FIREFOX_PKG),
         (format!("{xdg_config}/vivaldi"), VIVALDI_PKG),
+        (format!("{xdg_cache}/vivaldi"), VIVALDI_PKG),
         (format!("{xdg_config}/yay"), YAY_PKG),
         (format!("{xdg_cache}/yay"), YAY_PKG),
         (format!("{xdg_config}/unity3d"), UNITY_PKG),
