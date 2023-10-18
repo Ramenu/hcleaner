@@ -133,6 +133,8 @@ fn main()
         (format!("{xdg_config}/epiphany"), EPIPHANY_BROWSER_PKG),
         (format!("{xdg_cache}/epiphany"), EPIPHANY_BROWSER_PKG),
         (format!("{xdg_data}/epiphany"), EPIPHANY_BROWSER_PKG),
+        (format!("{xdg_config}/thorium"), THORIUM_BROWSER_PKG),
+        (format!("{xdg_cache}/thorium"), THORIUM_BROWSER_PKG),
     ]);
     println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()

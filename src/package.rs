@@ -51,6 +51,7 @@ pub const INTELLIJ_IDEA_PKG : Package = Package{arch: "intellij-idea-community-e
 pub const GRADLE_PKG : Package = Package{arch: "gradle", debian: "gradle"};
 pub const CISCO_PACKET_TRACER_PKG : Package = Package{arch: "packettracer", debian: ""};
 pub const EPIPHANY_BROWSER_PKG : Package = Package{arch: "epiphany", debian: "epiphany-browser"};
+pub const THORIUM_BROWSER_PKG : Package = Package{arch: "thorium-browser-bin", debian: ""};
 
 pub struct Package
 {
