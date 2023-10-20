@@ -137,7 +137,12 @@ fn main()
         (format!("{xdg_cache}/thorium"), THORIUM_BROWSER_PKG),
         (format!("{home}/.mercury"), MERCURY_BROWSER_PKG),
         (format!("{xdg_cache}/mercury"), MERCURY_BROWSER_PKG),
+        (format!("{home}/.moonchild productions/pale moon"), PALEMOON_BROWSER_PKG),
+        (format!("{xdg_cache}/moonchild productions/pale moon"), PALEMOON_BROWSER_PKG),
+        (format!("{home}/.floorp"), FLOORP_BROWSER_PKG),
+        (format!("{xdg_cache}/floorp"), FLOORP_BROWSER_PKG),
     ]);
+
     println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()
                                                     .filter_map(|e| e.ok())

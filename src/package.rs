@@ -53,6 +53,8 @@ pub const CISCO_PACKET_TRACER_PKG : Package = Package{arch: "packettracer", debi
 pub const EPIPHANY_BROWSER_PKG : Package = Package{arch: "epiphany", debian: "epiphany-browser"};
 pub const THORIUM_BROWSER_PKG : Package = Package{arch: "thorium-browser-bin", debian: ""};
 pub const MERCURY_BROWSER_PKG : Package = Package{arch: "mercury-browser-bin", debian: ""};
+pub const PALEMOON_BROWSER_PKG : Package = Package{arch: "palemoon|palemoon-bin", debian: ""};
+pub const FLOORP_BROWSER_PKG : Package = Package{arch: "floorp", debian: ""};
 
 pub struct Package
 {
