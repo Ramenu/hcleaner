@@ -141,6 +141,8 @@ fn main()
         (format!("{xdg_cache}/moonchild productions/pale moon"), PALEMOON_BROWSER_PKG),
         (format!("{home}/.floorp"), FLOORP_BROWSER_PKG),
         (format!("{xdg_cache}/floorp"), FLOORP_BROWSER_PKG),
+        (format!("{xdg_config}/kristall"), KRISTALL_BROWSER_PKG),
+        (format!("{xdg_cache}/kristall"), KRISTALL_BROWSER_PKG),
     ]);
 
     println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
