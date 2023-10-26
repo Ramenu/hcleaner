@@ -57,6 +57,7 @@ pub const PALEMOON_BROWSER_PKG : Package = Package{arch: "palemoon|palemoon-bin"
 pub const FLOORP_BROWSER_PKG : Package = Package{arch: "floorp", debian: ""};
 pub const KRISTALL_BROWSER_PKG : Package = Package{arch: "kristall-git|kristall", debian: ""};
 pub const NETSURF_BROWSER_PKG : Package = Package{arch: "netsurf", debian: ""};
+pub const MAVEN_PKG : Package = Package{arch: "maven", debian: "maven"}; 
 
 pub struct Package
 {
