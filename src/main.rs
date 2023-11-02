@@ -118,6 +118,7 @@ fn main()
         (format!("{xdg_config}/BraveSoftware/Brave-Browser-Nightly"), BRAVE_BROWSER_NIGHTLY_PKG),
         (format!("{xdg_config}/Session"), SESSION_PKG),
         (format!("{home}/.local/opt/tor-browser"), TOR_BROWSER_PKG),
+        (format!("{xdg_cache}/tor-browser-tmpdata"), TOR_BROWSER_PKG),
         (format!("{xdg_config}/microsoft-edge"), MICROSOFT_EDGE_PKG),
         (format!("{xdg_cache}/microsoft-edge"), MICROSOFT_EDGE_PKG),
         (format!("{xdg_cache}/Microsoft/Edge"), MICROSOFT_EDGE_PKG),
