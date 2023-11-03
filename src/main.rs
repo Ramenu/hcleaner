@@ -54,7 +54,7 @@ fn main()
         (format!("{xdg_data}/supertuxkart"), SUPERTUXKART_PKG),
         (format!("{xdg_config}/syncthing"), SYNCTHING_PKG),
         (format!("{xdg_config}/midori"), MIDORI_PKG),
-        (format!("{xdg_config}/lapce"), LAPCE_PKG),
+        (format!("{xdg_config}/lapce-stable"), LAPCE_PKG),
         (format!("{xdg_config}/weechat"), WEECHAT_PKG),
         (format!("{xdg_data}/weechat"), WEECHAT_PKG),
         (format!("{xdg_data}/midori"), MIDORI_PKG),
