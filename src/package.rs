@@ -58,6 +58,7 @@ pub const FLOORP_BROWSER_PKG : Package = Package{arch: "floorp", debian: ""};
 pub const KRISTALL_BROWSER_PKG : Package = Package{arch: "kristall-git|kristall", debian: ""};
 pub const NETSURF_BROWSER_PKG : Package = Package{arch: "netsurf", debian: ""};
 pub const MAVEN_PKG : Package = Package{arch: "maven", debian: "maven"}; 
+pub const STEAM_PKG : Package = Package{arch: "steam", debian: ""};
 
 pub struct Package
 {

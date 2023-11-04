@@ -147,6 +147,10 @@ fn main()
         (format!("{xdg_config}/netsurf"), NETSURF_BROWSER_PKG),
         (format!("{xdg_cache}/netsurf"), NETSURF_BROWSER_PKG),
         (format!("{home}/.m2"), MAVEN_PKG),
+        (format!("{home}/.steampath"), STEAM_PKG),
+        (format!("{xdg_data}/Steam"), STEAM_PKG),
+        (format!("{home}/.steam"), STEAM_PKG),
+        (format!("{home}/.steampid"), STEAM_PKG),
     ]);
 
     println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
