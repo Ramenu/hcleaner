@@ -59,6 +59,7 @@ pub const KRISTALL_BROWSER_PKG : Package = Package{arch: "kristall-git|kristall"
 pub const NETSURF_BROWSER_PKG : Package = Package{arch: "netsurf", debian: ""};
 pub const MAVEN_PKG : Package = Package{arch: "maven", debian: "maven"}; 
 pub const STEAM_PKG : Package = Package{arch: "steam", debian: ""};
+pub const ARDUINO_IDE_PKG : Package = Package{arch: "arduino", debian: "arduino"};
 
 pub struct Package
 {

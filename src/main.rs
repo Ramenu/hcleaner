@@ -151,6 +151,7 @@ fn main()
         (format!("{xdg_data}/Steam"), STEAM_PKG),
         (format!("{home}/.steam"), STEAM_PKG),
         (format!("{home}/.steampid"), STEAM_PKG),
+        (format!("{home}/.arduino15"), ARDUINO_IDE_PKG),
     ]);
 
     println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
