@@ -61,6 +61,7 @@ pub const MAVEN_PKG : Package = Package{arch: "maven", debian: "maven"};
 pub const STEAM_PKG : Package = Package{arch: "steam", debian: ""};
 pub const ARDUINO_IDE_PKG : Package = Package{arch: "arduino", debian: "arduino"};
 pub const WINE_PKG : Package = Package{arch: "wine", debian: "wine"};
+pub const VSCODIUM_PKG : Package = Package{arch: "code", debian: ""};
 
 pub struct Package
 {

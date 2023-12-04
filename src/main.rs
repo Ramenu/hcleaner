@@ -68,7 +68,7 @@ fn main()
         (format!("{xdg_config}/keepassxc"), KEEPASSXC_PKG),
         (format!("{xdg_cache}/keepassxc"), KEEPASSXC_PKG),
         (format!("{xdg_config}/Code"), VSCODE_PKG),
-        (format!("{xdg_config}/Code - OSS"), VSCODE_PKG),
+        (format!("{xdg_config}/Code - OSS"), VSCODIUM_PKG),
         (format!("{home}/.vscode"), VSCODE_PKG),
         (format!("{home}/.mozilla/firefox"), FIREFOX_PKG),
         (format!("{xdg_cache}/mozilla/firefox"), FIREFOX_PKG),
