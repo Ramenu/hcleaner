@@ -154,6 +154,9 @@ fn main()
         (format!("{home}/.arduino15"), ARDUINO_IDE_PKG),
         (format!("{home}/.wine"), WINE_PKG),
         (format!("{xdg_cache}/wine"), WINE_PKG),
+        (format!("{xdg_config}/sayonara"), SAYONARA_PLAYER_PKG),
+        (format!("{xdg_data}/sayonara"), SAYONARA_PLAYER_PKG),
+        (format!("{xdg_cache}/sayonara"), SAYONARA_PLAYER_PKG),
     ]);
 
     println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
