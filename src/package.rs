@@ -63,6 +63,7 @@ pub const ARDUINO_IDE_PKG : Package = Package{arch: "arduino", debian: "arduino"
 pub const WINE_PKG : Package = Package{arch: "wine", debian: "wine"};
 pub const VSCODIUM_PKG : Package = Package{arch: "code", debian: ""};
 pub const SAYONARA_PLAYER_PKG : Package = Package{arch: "sayonara-player", debian: "sayonara"};
+pub const VLC_PKG : Package = Package{arch: "vlc", debian: "vlc"};
 
 pub struct Package
 {
