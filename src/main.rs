@@ -1,4 +1,4 @@
-use std::{collections::HashMap, io::Write, fs, process::exit};
+use std::{collections::HashMap, io::Write, process::exit};
 
 use indicatif::{ProgressBar, ProgressStyle};
 use os::DISTRIBUTION;
@@ -6,12 +6,13 @@ use package::*;
 use walkdir::WalkDir;
 use bitflags::bitflags;
 
-use crate::constants::*;
+use crate::{constants::*, os::DistroBase};
 
 mod os;
 mod log;
 mod package;
 mod constants;
+mod converter;
 
 bitflags! {
     #[derive(PartialEq, Clone, Copy)]
@@ -21,6 +22,7 @@ bitflags! {
         const SHOW_VERSION = 1 << 1;
         const CLEAN_CACHE = 1 << 2;
         const ALWAYS_PROMPT = 1 << 3;
+        const SHOW_DISK_SPACE = 1 << 4;
     }
 }
 
@@ -40,13 +42,13 @@ fn main()
     let xdg_data = std::env::var("XDG_DATA_HOME").unwrap_or(format!("{}/.local/share", home));
 
     let mut step = 1;
-    let total_steps = || -> u64 {
-        let mut total_steps = 2;
+    let total_steps = {
+        let mut total_steps : u64 = 2;
         if flags&ArgFlags::CLEAN_CACHE == ArgFlags::CLEAN_CACHE {
             total_steps += 1;
         }
         total_steps
-    }();
+    };
 
     let map : HashMap<String, Package> = HashMap::from([
         (format!("{home}/.dillo"), DILLO_PKG),
@@ -160,6 +162,9 @@ fn main()
         (format!("{xdg_config}/vlc"), VLC_PKG),
     ]);
 
+    // only needed if we're checking disk space
+    let mut pkg_sizes : HashMap<Package, u64> = HashMap::new();
+
     println!("{BOLD}[{step}/{total_steps}]{RESET} Checking total number of files in home directory...");
     let total_files = WalkDir::new(home).into_iter()
                                                     .filter_map(|e| e.ok())
@@ -204,7 +209,7 @@ fn main()
                                         &warn!("remove empty directory '{}'?", path.to_str().unwrap()));
                     continue;
                 }
-            }
+            } 
         }
 
         bar.inc(1);
@@ -212,19 +217,48 @@ fn main()
 
         if let Some(pkg) = pkg {
             if let Some(false) = pkg_exists(pkg) {
-                if is_dir {
-                    confirm_before_exec(|| std::fs::remove_dir_all(path).unwrap(),
-                                        !noconfirm,
-                                        &warn!("remove all contents from '{}'?", path_str));
+                if !show_disk_space_only(flags) {
+                    if is_dir {
+                        confirm_before_exec(|| std::fs::remove_dir_all(path).unwrap(),
+                                            !noconfirm,
+                                            &warn!("remove all contents from '{}'?", path_str));
+                    } else {
+                        confirm_before_exec(|| std::fs::remove_file(path).unwrap(),
+                                            !noconfirm,
+                                            &warn!("remove '{}'?", path_str));
+                    }
+                }
+            } else if show_disk_space_only(flags) {
+                let size = fs_extra::dir::get_size(path).unwrap();
+                if pkg_sizes.get(pkg).is_none() {
+                    pkg_sizes.insert(*pkg, size);
                 } else {
-                    confirm_before_exec(|| std::fs::remove_file(path).unwrap(),
-                                        !noconfirm,
-                                        &warn!("remove '{}'?", path_str));
+                    let old_size = pkg_sizes.get(pkg).unwrap();
+                    pkg_sizes.insert(*pkg, old_size + size);
                 }
             }
         }
     }
     bar.finish_and_clear();
+
+    if show_disk_space_only(flags) {
+        let mut sorted = pkg_sizes.iter().collect::<Vec<_>>();
+        sorted.sort_by(|(_, a), (_, b)| b.cmp(a));
+
+        for (pkg, size_bytes) in sorted {
+            let pkgname = match DISTRIBUTION.base {
+                DistroBase::Arch => pkg.arch,
+                DistroBase::Debian => pkg.debian,
+            };
+            let (size, unit) = converter::convert_bytes_to_appropriate_unit(*size_bytes);
+            match *size_bytes {
+                size_bytes if size_bytes >= GB_IN_BYTES => println!("{BOLD}{GREEN}{pkgname}{RESET}{BOLD}:{RESET} {YELLOW}{size:.2} {unit}{RESET}"),
+                size_bytes if size_bytes >= TB_IN_BYTES => println!("{BOLD}{GREEN}{pkgname}{RESET}{BOLD}:{RESET} {RED}{size:.2} {unit}{RESET}"),
+                _ => println!("{BOLD}{GREEN}{pkgname}{RESET}{BOLD}:{RESET} {size:.2} {unit}"),
+            }
+        }
+        exit(0);
+    }
 
     if flags&ArgFlags::CLEAN_CACHE == ArgFlags::CLEAN_CACHE {
         step += 1;
@@ -269,8 +303,8 @@ fn clean_cache(cache_dir : &String, always_prompt : bool)
                                 std::fs::remove_file(subentry_path).unwrap();
                             }
                         },
-                                            always_prompt,
-                                            &warn!("remove '{}'?", subentry_str));
+                        always_prompt,
+                        &warn!("remove '{}'?", subentry_str));
                     }
                 }
                 continue;
@@ -329,6 +363,7 @@ fn parse_args() -> ArgFlags
                 match c {
                     // show version 
                     'v' => flags |= ArgFlags::SHOW_VERSION,
+                    'd' => flags |= ArgFlags::SHOW_DISK_SPACE,
                     // more verbose commands
                     '-' => {
                         match arg.as_str() {
@@ -336,6 +371,7 @@ fn parse_args() -> ArgFlags
                             "--noconfirm" => flags |= ArgFlags::NOCONFIRM,
                             "--clean-cache" => flags |= ArgFlags::CLEAN_CACHE,
                             "--always-prompt" => flags |= ArgFlags::ALWAYS_PROMPT,
+                            "--show-disk-space" => flags |= ArgFlags::SHOW_DISK_SPACE,
                             "--help" => {
                                 println!("{}", HELP_MESSAGE);
                                 std::process::exit(0);
@@ -370,6 +406,12 @@ fn get_accent_colors() -> (&'static str, &'static str)
         "Debian GNU/Linux" => ("red", "blue"),
         _ => ("white", "white"),
     }
+}
+
+#[inline]
+fn show_disk_space_only(flags : ArgFlags) -> bool
+{
+    flags&ArgFlags::SHOW_DISK_SPACE == ArgFlags::SHOW_DISK_SPACE
 }
 
 #[inline]

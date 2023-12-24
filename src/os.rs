@@ -4,18 +4,21 @@ use lazy_static::lazy_static;
 
 use crate::log;
 
+pub enum DistroBase
+{
+    Arch,
+    Debian
+}
+
 pub struct DistroInfo 
 {
     pub name : &'static str,
-    pub base_flag : u32
+    pub base : DistroBase
 }
 
 lazy_static! {
     pub static ref DISTRIBUTION : DistroInfo = check_linux_distribution();
 }
-
-pub const ARCH_BASE_FLAG : u32 = 1;
-pub const DEBIAN_BASE_FLAG : u32 = 2;
 
 pub const ARCH_STR : &str = "Arch Linux";
 pub const DEBIAN_STR : &str = "Debian GNU/Linux";
@@ -31,8 +34,8 @@ fn check_linux_distribution() -> DistroInfo
                 if let Some(name) = line.split_once('=').map(|x| x.1) {
                     let name = name.trim_matches('"');
                     match name {
-                        ARCH_STR => return DistroInfo{name: ARCH_STR, base_flag: ARCH_BASE_FLAG},
-                        DEBIAN_STR => return DistroInfo{name: DEBIAN_STR, base_flag: DEBIAN_BASE_FLAG},
+                        ARCH_STR => return DistroInfo{name: ARCH_STR, base: DistroBase::Arch},
+                        DEBIAN_STR => return DistroInfo{name: DEBIAN_STR, base: DistroBase::Debian},
                         _ => log::terminate("unsupported Linux distribution")
                     };
                     

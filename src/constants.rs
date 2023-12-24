@@ -25,3 +25,6 @@ Report bugs and security issues on https://www.github.com/Ramenu/hcleaner";
 #[allow(unused)] pub const CYAN : &str = "\x1b[36m";
 #[allow(unused)] pub const WHITE : &str = "\x1b[37m";
 #[allow(unused)] pub const BOLD : &str = "\x1b[1m";
+
+pub const GB_IN_BYTES : u64 = 1_073_741_824;
+pub const TB_IN_BYTES : u64 = 1_099_511_627_776;

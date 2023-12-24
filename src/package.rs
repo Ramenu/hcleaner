@@ -1,6 +1,6 @@
 use std::process::Command;
 
-use crate::os::{DISTRIBUTION, ARCH_BASE_FLAG};
+use crate::os::{DISTRIBUTION, DistroBase};
 
 pub const DILLO_PKG : Package = Package{arch: "dillo", debian: "dillo"};
 pub const SUPERTUXKART_PKG : Package = Package{arch: "supertuxkart", debian: "supertuxkart"};
@@ -65,6 +65,7 @@ pub const VSCODIUM_PKG : Package = Package{arch: "code", debian: ""};
 pub const SAYONARA_PLAYER_PKG : Package = Package{arch: "sayonara-player", debian: "sayonara"};
 pub const VLC_PKG : Package = Package{arch: "vlc", debian: "vlc"};
 
+#[derive(PartialEq, Eq, Hash, Copy, Clone)]
 pub struct Package
 {
     pub arch : &'static str,
@@ -76,8 +77,8 @@ pub struct Package
 /// is false, then the package is not installed.
 pub fn pkg_exists(pkg : &Package) -> Option<bool>
 {
-    match DISTRIBUTION.base_flag {
-        ARCH_BASE_FLAG => pkg_exists_arch(pkg.arch),
+    match DISTRIBUTION.base {
+        DistroBase::Arch => pkg_exists_arch(pkg.arch),
         _ => unreachable!()
     }
 }
