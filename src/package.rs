@@ -1,4 +1,4 @@
-use std::process::Command;
+use alpm::Alpm;
 
 use crate::os::{DISTRIBUTION, DistroBase};
 
@@ -90,15 +90,11 @@ fn pkg_exists_arch(pkgname : &str) -> Option<bool>
     }
 
     let all_pkgs = pkgname.split('|');
+    let pacman = Alpm::new("/", "/var/lib/pacman").unwrap();
+    let db = pacman.localdb();
 
     for pkgname in all_pkgs {
-        let output = Command::new("pacman")
-                                     .arg("-Q")
-                                     .arg(pkgname)
-                                     .output()
-                                     .expect("Failed to query database");
-
-        if output.status.success() {
+        if db.pkg(pkgname).is_ok() {
             return Some(true)
         }
     }
