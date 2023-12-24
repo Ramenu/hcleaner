@@ -43,7 +43,7 @@ pub const WATERFOX_PKG : Package = Package{arch: "waterfox-current-bin|waterfox|
 pub const BASILISK_PKG : Package = Package{arch: "basilisk-bin|basilisk", debian: ""};
 pub const BRAVE_BROWSER_NIGHTLY_PKG : Package = Package{arch: "brave-nightly-bin", debian: ""};
 pub const SESSION_PKG : Package = Package{arch: "session-desktop-bin|session-desktop-git", debian: ""};
-pub const TOR_BROWSER_PKG : Package = Package{arch: "tor-browser", debian: "torbrowser-launcher"};
+pub const TOR_BROWSER_PKG : Package = Package{arch: "tor-browser|tor-browser-bin", debian: "torbrowser-launcher"};
 pub const MICROSOFT_EDGE_PKG : Package = Package{arch: "microsoft-edge-stable-bin|microsoft-edge-beta-bin|microsoft-edge-dev-bin", debian: ""};
 pub const NETBEANS_PKG : Package = Package{arch: "netbeans", debian: "netbeans"};
 pub const ORACLE_SQLDEVELOPER_PKG : Package = Package{arch: "oracle-sqldeveloper", debian: "sqldeveloper-package"};
@@ -96,6 +96,15 @@ fn pkg_exists_arch(pkgname : &str) -> Option<bool>
     for pkgname in all_pkgs {
         if db.pkg(pkgname).is_ok() {
             return Some(true)
+        } else {
+            // if the package itself does not exist, check if any package provides it
+            for pkg in db.pkgs() {
+                for provide in pkg.provides() {
+                    if provide.name() == pkgname {
+                        return Some(true)
+                    }
+                }
+            }
         }
     }
 
