@@ -328,7 +328,7 @@ fn confirm_before_exec<T>(callback : T, confirm : bool, msg : &str)
     where T : Fn()
 {
     if confirm {
-        print!("{msg} [y/N] ");
+        print!("{msg} (y/N) ");
         std::io::stdout().flush().unwrap();
         let mut input = String::new();
         std::io::stdin().read_line(&mut input).unwrap();
