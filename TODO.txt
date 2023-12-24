@@ -1,1 +1,2 @@
-* Add a menu showing which packages take up the most disk space
+* Use libalpm instead of querying pacman directly
+* Remove progress bar or change it to a spinner
