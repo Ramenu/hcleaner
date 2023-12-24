@@ -1,4 +1,4 @@
-use std::{collections::HashMap, io::Write};
+use std::{collections::HashMap, io::Write, fs, process::exit};
 
 use indicatif::{ProgressBar, ProgressStyle};
 use os::DISTRIBUTION;
@@ -183,6 +183,13 @@ fn main()
 
     for entry in it {
         let path = entry.path();
+        let is_symlink = path.symlink_metadata().unwrap().file_type().is_symlink();
+
+        if is_symlink {
+            continue;
+        }
+
+        let path_str = path.to_str().unwrap();
         let is_dir = path.is_dir();
 
         // Remove empty directories without prompt as they are
@@ -201,7 +208,6 @@ fn main()
         }
 
         bar.inc(1);
-        let path_str = path.to_str().unwrap();
         let pkg = map.get(path_str);
 
         if let Some(pkg) = pkg {
