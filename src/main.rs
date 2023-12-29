@@ -23,6 +23,7 @@ bitflags! {
         const CLEAN_CACHE = 1 << 2;
         const ALWAYS_PROMPT = 1 << 3;
         const SHOW_DISK_SPACE = 1 << 4;
+        const CLEAN_EMPTY_DIRECTORIES = 1 << 5;
     }
 }
 
@@ -160,6 +161,8 @@ fn main()
         (format!("{xdg_data}/sayonara"), SAYONARA_PLAYER_PKG),
         (format!("{xdg_cache}/sayonara"), SAYONARA_PLAYER_PKG),
         (format!("{xdg_config}/vlc"), VLC_PKG),
+        (format!("{xdg_config}/sublime-text"), SUBLIME_TEXT_PKG),
+        (format!("{xdg_cache}/sublime-text"), SUBLIME_TEXT_PKG),
     ]);
 
     // only needed if we're checking disk space
@@ -197,9 +200,7 @@ fn main()
         let path_str = path.to_str().unwrap();
         let is_dir = path.is_dir();
 
-        // Remove empty directories without prompt as they are
-        // just extra clutter
-        if is_dir {
+        if flags&ArgFlags::CLEAN_EMPTY_DIRECTORIES == ArgFlags::CLEAN_EMPTY_DIRECTORIES && is_dir {
             let read_dir = path.read_dir();
             if let Ok(mut read_dir) = read_dir {
                 let is_empty = read_dir.next().is_none();
@@ -372,6 +373,7 @@ fn parse_args() -> ArgFlags
                             "--clean-cache" => flags |= ArgFlags::CLEAN_CACHE,
                             "--always-prompt" => flags |= ArgFlags::ALWAYS_PROMPT,
                             "--show-disk-space" => flags |= ArgFlags::SHOW_DISK_SPACE,
+                            "--clean-empty-directories" => flags |= ArgFlags::CLEAN_EMPTY_DIRECTORIES,
                             "--help" => {
                                 println!("{}", HELP_MESSAGE);
                                 std::process::exit(0);
