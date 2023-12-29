@@ -64,6 +64,7 @@ pub const WINE_PKG : Package = Package{arch: "wine", debian: "wine"};
 pub const VSCODIUM_PKG : Package = Package{arch: "code", debian: ""};
 pub const SAYONARA_PLAYER_PKG : Package = Package{arch: "sayonara-player", debian: "sayonara"};
 pub const VLC_PKG : Package = Package{arch: "vlc", debian: "vlc"};
+pub const SUBLIME_TEXT_PKG : Package = Package{arch: "sublime-text-4", debian: ""};
 
 #[derive(PartialEq, Eq, Hash, Copy, Clone)]
 pub struct Package
